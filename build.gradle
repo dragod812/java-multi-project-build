@@ -1,0 +1,43 @@
+//javaprojects
+//|- api
+//|- common
+//|- app
+allprojects {
+	task ProjectCheck {
+		doLast {
+			task -> println "Response from $task.project.name "
+		}
+	}
+}
+subprojects {
+  apply plugin: "java"
+ 
+  repositories {
+    mavenCentral()
+  }
+
+  dependencies {
+     testCompile "junit:junit:4+"
+  }
+}
+//API specific stuff
+project(':api'){
+	dependencies {
+      compile project(':common')
+      compile 'org.apache.commons:commons-lang3:3.4'
+      compile 'org.apache.logging.log4j:log4j-core:2.6.2'
+	}
+}
+//app specific stuff
+project(':app'){
+	dependencies {
+      compile project(':common'), project(':api')
+      compile 'org.apache.logging.log4j:log4j-core:2.6.2'
+	}
+}
+//Common specific stuff
+project(':common'){
+	dependencies {
+		compile 'org.apache.commons:commons-lang3:3.4'
+	}
+}
